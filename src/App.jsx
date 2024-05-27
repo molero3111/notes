@@ -13,7 +13,7 @@ import SignUp from "./components/SignUp";
 import NoteForm, { loadNoteDetail, loadTagsAndCategories } from './components/Notes/NoteForm';
 
 const router = createBrowserRouter([{
-  path: '/',
+  path: '/notes-app/',
   element: <RootLayout />,
   errorElement: <ErrorPage />,
   children: [
