@@ -12,8 +12,10 @@ import ProtectedComponent from "./components/ProtectedComponent";
 import SignUp from "./components/SignUp";
 import NoteForm, { loadNoteDetail, loadTagsAndCategories } from './components/Notes/NoteForm';
 
+export const appURL = import.meta.env.VITE_APP_URL;
+
 const router = createBrowserRouter([{
-  path: '/notes-app/',
+  path: appURL,
   element: <RootLayout />,
   errorElement: <ErrorPage />,
   children: [

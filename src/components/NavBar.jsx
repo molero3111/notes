@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/Authentication/AuthActions';
+import getAbsolutePathUrl from '../utils/URLManager';
 
 
 function NavBar() {
@@ -11,7 +12,7 @@ function NavBar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     dispatch(logout());
-    navigate('/');
+    navigate(getAbsolutePathUrl());
   };
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -24,20 +25,20 @@ function NavBar() {
             {!isAuthenticated && (
               <>
                 <li className="nav-item">
-                  <NavLink to="/" className="nav-link">Login</NavLink>
+                  <NavLink to={getAbsolutePathUrl()} className="nav-link">Login</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/signup" className="nav-link">Sign up</NavLink>
+                  <NavLink to={getAbsolutePathUrl("signup")} className="nav-link">Sign up</NavLink>
                 </li>
               </>
             )}
             {isAuthenticated && (
               <>
                 <li className="nav-item">
-                  <NavLink to="/notes/" className="nav-link">Notes</NavLink>
+                  <NavLink to={getAbsolutePathUrl("notes/")} className="nav-link">Notes</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/notes/archived/" className="nav-link">Archive</NavLink>
+                  <NavLink to={getAbsolutePathUrl("notes/archived/")} className="nav-link">Archive</NavLink>
                 </li>
                 <li className="nav-item">
                   <button className="btn nav-link" onClick={handleLogout}>Logout</button>

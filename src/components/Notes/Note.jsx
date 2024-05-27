@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { sendRequest } from '../../utils/HttpRequest';
+import getAbsolutePathUrl from '../../utils/URLManager';
 
 
 const Note = ({ note, deleteNote }) => {
@@ -9,7 +10,7 @@ const Note = ({ note, deleteNote }) => {
     await sendRequest('PUT', `/notes/${note.id}/`, {
       archived: !note.archived
     });
-    navigate(note.archived ? '/notes/archived/' : '/notes/');
+    navigate(getAbsolutePathUrl(note.archived ? 'notes/archived/' : 'notes/'));
   };
   return (
     <div className="col" key={note.id}>

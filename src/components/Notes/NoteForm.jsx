@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { sendRequest } from '../../utils/HttpRequest';
 import { useLoaderData, useNavigate } from 'react-router-dom';
+import getAbsolutePathUrl from '../../utils/URLManager';
 
 const NoteForm = () => {
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ const NoteForm = () => {
             url += noteDetails.id + '/';
         }
         await sendRequest(httpMethod, url, note);
-        navigate(archived ? '/notes/archived/' : '/notes/');
+        navigate(getAbsolutePathUrl(archived ? 'notes/archived/' : 'notes/'));
     };
 
 

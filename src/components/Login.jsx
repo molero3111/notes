@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../store/Authentication/AuthActions';
 import { useNavigate } from 'react-router-dom';
 import { sendRequest } from '../utils/HttpRequest';
+import getAbsolutePathUrl from '../utils/URLManager';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -21,7 +22,7 @@ const Login = () => {
             const token = responseData.token;
             dispatch(login(token));
             localStorage.setItem('token', token);
-            navigate('/notes');
+            navigate(getAbsolutePathUrl('notes'));
         } catch (error) {
             setLogingError(true);
             console.error('Error logging in:', error);

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../store/Authentication/AuthActions';
 import { useNavigate } from 'react-router-dom';
 import { sendRequest } from '../utils/HttpRequest';
+import getAbsolutePathUrl from '../utils/URLManager';
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -23,7 +24,7 @@ const SignUp = () => {
             const token = responseData.token;
             dispatch(login(token));
             localStorage.setItem('token', token);
-            navigate('/notes');
+            navigate(getAbsolutePathUrl('notes'));
         } catch (error) {
             console.log('error is ', error);
             setSignupError(true);

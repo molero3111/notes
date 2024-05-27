@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom"; // Import Outlet
+import getAbsolutePathUrl from "../utils/URLManager";
 
 const ProtectedComponent = () => {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ const ProtectedComponent = () => {
         const userToken = localStorage.getItem('token');
         if (!userToken) {
             setIsLoggedIn(false);
-            return navigate('/');
+            return navigate(getAbsolutePathUrl());
         }
         setIsLoggedIn(true);
     }, [navigate]);
