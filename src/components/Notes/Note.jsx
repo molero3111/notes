@@ -34,7 +34,7 @@ const Note = ({ note, deleteNote }) => {
               </span>
             ))}
           </div>
-          <NavLink to={`/notes/${note.id}/edit`} className="btn btn-primary me-2 mt-3 text-center">Update</NavLink>
+          <NavLink to={getAbsolutePathUrl(`notes/${note.id}/edit`)} className="btn btn-primary me-2 mt-3 text-center">Update</NavLink>
           <button className="btn btn-secondary me-2 mt-3" onClick={archiveNote}>{note.archived ? 'Unarchive' : 'Archive'}</button>
           <button className="btn btn-danger me-2 mt-3" onClick={() => deleteNote(note.id)}>Delete</button>
         </div>
