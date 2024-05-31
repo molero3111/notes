@@ -12,7 +12,7 @@ import ProtectedComponent from "./components/ProtectedComponent";
 import SignUp from "./components/SignUp";
 import NoteForm, { loadNoteDetail, loadTagsAndCategories } from './components/Notes/NoteForm';
 
-export const appURL = import.meta.env.VITE_APP_URL;
+export const appURL = import.meta.env.VITE_APP_URL || '/notes-app/';
 
 const router = createBrowserRouter([{
   path: appURL,
