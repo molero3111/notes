@@ -3,7 +3,7 @@ import Note from './Note';
 import { useEffect, useState } from 'react';
 import { sendRequest } from '../../utils/HttpRequest';
 import getAbsolutePathUrl from '../../utils/URLManager';
-
+import { Row, Container, Button } from 'react-bootstrap'; 
 
 const Notes = () => {
   const loadedNotes = useLoaderData();
@@ -17,22 +17,24 @@ const Notes = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="mt-4 text-center">Notes</h1>
+    <Container className="mt-4">
+      <h1 className="text-center">Notes</h1>
       <p className="text-center">
-        <NavLink to={getAbsolutePathUrl("notes/new")} className="btn btn-success me-2 mt-3 text-center">Add Note</NavLink>
+        <NavLink to={getAbsolutePathUrl("notes/new")} className="me-2 mt-3">
+          <Button variant="success">Add Note</Button>
+        </NavLink>
       </p>
-      <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      <Row xs={1} md={3} className="g-4 mt-3"> 
         {notes.map((note) => (
           <Note key={note.id} note={note} deleteNote={deleteNote} />
         ))}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 
-
 export default Notes;
+
 
 
 export async function loadArchivedNotes() {

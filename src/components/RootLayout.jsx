@@ -1,4 +1,4 @@
-import NavBar from "./NavBar";
+import NotesNavbar from "./NotesNavbar";
 import { Outlet, useNavigation } from "react-router-dom";
 
 const RootLayout = () => {
@@ -6,7 +6,7 @@ const RootLayout = () => {
     return (
         <>
             {navigation.state === 'loading' && <p>Loading...</p>}
-            <NavBar />
+            <NotesNavbar />
             <main>
                 <Outlet />
             </main>

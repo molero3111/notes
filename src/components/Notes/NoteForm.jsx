@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { sendRequest } from '../../utils/HttpRequest';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import getAbsolutePathUrl from '../../utils/URLManager';
+import { Form, FormGroup, Button } from 'react-bootstrap';
 
 const NoteForm = () => {
     const navigate = useNavigate();
@@ -46,56 +47,83 @@ const NoteForm = () => {
     return (
         <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
             <div className="card p-4" style={{ width: '500px' }}>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="title" className="form-label">Title</label>
-                        <input type="text" className="form-control" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="content" className="form-label">Content</label>
-                        <textarea className="form-control" id="content" value={content} onChange={(e) => setContent(e.target.value)} />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="tags" className="form-label">Tags</label>
-                        <select multiple className="form-select" id="tags" value={selectedTags} onChange={(e) => setSelectedTags(Array.from(e.target.selectedOptions, option => parseInt(option.value)))}>
-                            {tags && tags.map(tag => (
-                                <option key={tag.id} value={tag.id}>{tag.name}</option>
-                            ))}
-                        </select>
-                        <div>
+                <Form onSubmit={handleSubmit}>
+                    <FormGroup className="mb-3">
+                        {/* <Label htmlFor="title">Title</Label>
+                        <Input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} /> */}
+                        <Form.Label htmlFor="title">Title</Form.Label>
+                        <Form.Control
+                            type="text"
+                            id="title"
+                            aria-describedby="Note title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)} 
+                        />
+                    </FormGroup>
+                    <FormGroup className="mb-3">
+                        <Form.Label htmlFor="content">Content</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            id="content"
+                            aria-describedby="content title"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)} 
+                        />
+                    </FormGroup>
+                    <FormGroup className="mb-3">
+                        <Form.Label htmlFor="tags">Tags</Form.Label>
+                        <Form.Control
+                            as="select"
+                            multiple
+                            id="tags"
+                            aria-describedby="tags"
+                            value={selectedTags}                             
+                            onChange={(e) => setSelectedTags(Array.from(e.target.selectedOptions, option => parseInt(option.value)))}>
+                                {tags && tags.map(tag => (
+                                        <option key={tag.id} value={tag.id}>{tag.name}</option>
+                                    ))}
+                        </Form.Control>
+                        <Form.Text>
                             {selectedTags.map(selectedTagId => {
                                 const tag = tags.find(tag => tag.id === selectedTagId);
                                 return (
                                     <span key={tag.id} className="badge bg-secondary me-2">{tag.name}</span>
                                 );
                             })}
-                        </div>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="categories" className="form-label">Categories</label>
-                        <select multiple className="form-select" id="categories" value={selectedCategories} onChange={(e) => setSelectedCategories(Array.from(e.target.selectedOptions, option => parseInt(option.value)))}>
-                            {categories && categories.map(category => (
-                                <option key={category.id} value={category.id}>{category.name}</option>
-                            ))}
-                        </select>
-                        <div>
+                        </Form.Text>
+                    </FormGroup>
+
+                     
+                    <FormGroup className="mb-3">
+                        <Form.Label htmlFor="categories">Categories</Form.Label>
+                        <Form.Control
+                            as="select"
+                            multiple
+                            id="categories"
+                            aria-describedby="categories"
+                            value={selectedCategories}                             
+                            onChange={(e) => setSelectedCategories(Array.from(e.target.selectedOptions, option => parseInt(option.value)))}>
+                                {categories && categories.map(tag => (
+                                        <option key={tag.id} value={tag.id}>{tag.name}</option>
+                                    ))}
+                        </Form.Control>
+                        <Form.Text>
                             {selectedCategories.map(selectedCategoryId => {
                                 const category = categories.find(category => category.id === selectedCategoryId);
                                 return (
                                     <span key={category.id} className="badge bg-secondary me-2">{category.name}</span>
                                 );
                             })}
-                        </div>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </form>
+                        </Form.Text>
+                    </FormGroup>
+                    <Button type="submit" variant="primary">Submit</Button>
+                </Form>
             </div>
         </div>
     );
 };
 
 export default NoteForm;
-
 
 export const loadTagsAndCategories = async () => {
     const categories = await sendRequest('GET', '/categories/');

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Outlet } from "react-router-dom"; // Import Outlet
+import { useNavigate, Outlet } from "react-router-dom";
 import getAbsolutePathUrl from "../utils/URLManager";
 
 const ProtectedComponent = () => {

@@ -4,6 +4,7 @@ import { login } from '../store/Authentication/AuthActions';
 import { useNavigate } from 'react-router-dom';
 import { sendRequest } from '../utils/HttpRequest';
 import getAbsolutePathUrl from '../utils/URLManager';
+import { Form, Button, Alert } from 'react-bootstrap';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -33,36 +34,33 @@ const Login = () => {
         <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '70vh' }}>
             <div className="card p-4" style={{ width: '400px' }}>
                 <h2 className="text-center mb-4">Login</h2>
-                <form onSubmit={handleLogin}>
-                    <div className="mb-3">
-                        <label htmlFor="username" className="form-label">Username</label>
-                        <input
+                <Form onSubmit={handleLogin}>
+                    <Form.Group className="mb-3" controlId="formUsername">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
                             type="text"
-                            className="form-control"
-                            id="username"
                             placeholder="Enter username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="password" className="form-label">Password</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
                             type="password"
-                            className="form-control"
-                            id="password"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </div>
-                    <button type="submit" className="btn btn-primary">Login</button>
-                    {loginError && <p className='text-danger text-center' >Invalid credentials</p>}
-                </form>
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Login
+                    </Button>
+                    {loginError && <Alert variant="danger">Invalid credentials</Alert>}
+                </Form>
             </div>
         </div>
     );
 };
 
 export default Login;
-
