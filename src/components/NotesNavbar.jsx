@@ -3,10 +3,10 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/Authentication/AuthActions';
 import getAbsolutePathUrl from '../utils/URLManager';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container, Spinner } from 'react-bootstrap';
 
 
-function NotesNavbar() {
+function NotesNavbar(props) {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => !!state.auth.token);
   const navigate = useNavigate();
@@ -19,6 +19,9 @@ function NotesNavbar() {
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand href={getAbsolutePathUrl()}>Notes CRUD</Navbar.Brand>
+        {props.navigationState === 'loading' && <Spinner animation="border" role="status" variant="dark">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>}
         <Navbar.Toggle aria-controls="navbarSupportedContent" />
         <Navbar.Collapse id="navbarSupportedContent">
           <Nav className="me-auto">
