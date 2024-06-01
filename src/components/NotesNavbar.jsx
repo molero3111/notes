@@ -19,9 +19,6 @@ function NotesNavbar(props) {
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand href={getAbsolutePathUrl()}>Notes CRUD</Navbar.Brand>
-        {props.navigationState === 'loading' && <Spinner animation="border" role="status" variant="dark">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>}
         <Navbar.Toggle aria-controls="navbarSupportedContent" />
         <Navbar.Collapse id="navbarSupportedContent">
           <Nav className="me-auto">
@@ -48,6 +45,9 @@ function NotesNavbar(props) {
                 </Nav.Link>
               </>
             )}
+            {props.navigationState === 'loading' && <Spinner animation="border" role="status" variant="dark">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>}
           </Nav>
         </Navbar.Collapse>
       </Container>
