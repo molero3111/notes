@@ -59,10 +59,14 @@ const router = createBrowserRouter([
                 <NoteForm />
               </Suspense>
             ),
-            loader: () => {
-              return import("./components/Notes/NoteForm").then((module) =>
-                module.loadTagsAndCategories()
-              );
+            // loader: () => {
+            //   return import("./components/Notes/NoteForm").then((module) =>
+            //     module.loadTagsAndCategories()
+            //   );
+            // },
+            loader: async () => {
+              const module = await import("./components/Notes/NoteForm");
+              return module.loadTagsAndCategories();
             },
           },
           {
