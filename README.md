@@ -55,3 +55,7 @@ npm run dev
 ```
 6. Access notes app on http://localhost:5173/notes-app/, 
 you may sign up with a new user at http://localhost:5173/notes-app/signup
+
+## Contributing feedback
+
+To report a bug, suggest an improvement, or share an idea, please open a [GitHub issue](https://github.com/molero3111/notes/issues).
