@@ -39,5 +39,6 @@ jobs:
             git pull origin staging
             npm ci
             npm run build
-            rsync -av --delete --no-owner --no-group dist/ /var/www/notes/
+            cd /var/www/notes && shopt -s dotglob && rm -rf *
+            cp -r /home/emmanuel/notes_crud/frontend/dist/. /var/www/notes/
             echo "Deploy finished. Static files updated in /var/www/notes"
