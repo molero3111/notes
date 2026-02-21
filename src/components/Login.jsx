@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/Authentication/AuthActions';
 import { useNavigate } from 'react-router-dom';
@@ -10,8 +10,19 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginError, setLogingError] = useState(false);
+    const [checkedAuth, setCheckedAuth] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    // If user already has a token (e.g. after reload at root), redirect to notes
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate(getAbsolutePathUrl('notes'), { replace: true });
+            return;
+        }
+        setCheckedAuth(true);
+    }, [navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -29,6 +40,10 @@ const Login = () => {
             console.error('Error logging in:', error);
         }
     };
+
+    if (!checkedAuth) {
+        return null; // Avoid flashing login form before redirect when already logged in
+    }
 
     return (
         <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '70vh' }}>
