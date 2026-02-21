@@ -1,5 +1,6 @@
 # Deploy to VPS when code is pushed/merged to staging.
-# Uses environment "emmanuels-env" for secrets: VPS_HOST, VPS_USERNAME, SSH_PRIVATE_KEY
+# Requires repository secrets: VPS_HOST, VPS_USERNAME, SSH_PRIVATE_KEY
+# (Settings → Secrets and variables → Actions)
 
 name: Deploy to Staging (VPS)
 
@@ -12,8 +13,18 @@ jobs:
   deploy:
     name: Deploy frontend to VPS
     runs-on: ubuntu-latest
-    environment: emmanuels-env
     steps:
+      - name: Check required secrets
+        run: |
+          missing=""
+          [ -z "${{ secrets.VPS_HOST }}" ] && missing="${missing}VPS_HOST "
+          [ -z "${{ secrets.VPS_USERNAME }}" ] && missing="${missing}VPS_USERNAME "
+          [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ] && missing="${missing}SSH_PRIVATE_KEY "
+          if [ -n "$missing" ]; then
+            echo "::error::Missing or empty repository secrets: ${missing}. Add them in Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          echo "All required secrets are set."
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
