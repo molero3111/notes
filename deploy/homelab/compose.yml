@@ -1,0 +1,14 @@
+# Reference copy. Installed on the homelab at /srv/apps/notes-web/compose.yml;
+# the deploy user's forced command sets IMAGE_TAG and runs docker compose.
+services:
+  web:
+    image: ghcr.io/molero3111/notes-web:${IMAGE_TAG:?IMAGE_TAG is required}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+    networks:
+      - notes
+
+networks:
+  notes:
+    external: true
