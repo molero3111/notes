@@ -58,9 +58,9 @@ you may sign up with a new user at http://localhost:5173/notes-app/signup
 
 ## Homelab deployment
 
-Pushes to `staging` (or a manual run) trigger `.github/workflows/deploy-homelab.yml`, alongside the existing DigitalOcean workflow. It builds the `Dockerfile` (Vite build served by nginx, which also proxies `/api/`, `/admin/` and `/static/` to the `notes-api` container), pushes `ghcr.io/molero3111/notes-web:<sha>` and `:homelab`, then deploys over Tailscale via SSH. The compose file installed on the server is kept for reference in `deploy/homelab/compose.yml`.
+Pushes to `staging` (or a manual run against `staging`) trigger `.github/workflows/deploy-homelab.yml`, alongside the existing DigitalOcean workflow. It builds the `Dockerfile` (Vite build served by nginx, which also proxies `/api/`, `/admin/` and `/static/` to the `notes-api` container), pushes `ghcr.io/molero3111/notes-web:<sha>` and `:homelab`, then deploys over Tailscale via SSH. The compose file installed on the server is kept for reference in `deploy/homelab/compose.yml`.
 
-The base path is set at build time with `VITE_BASE_PATH` (default `/notes-app/`); keep it in line with `VITE_APP_URL`.
+The base path is set at build time with `VITE_BASE_PATH`, falling back to `VITE_APP_URL` and then `/notes-app/`.
 
 ## Contributing feedback
 
