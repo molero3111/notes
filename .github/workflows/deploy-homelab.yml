@@ -1,0 +1,85 @@
+# Build the web app image, push it to GHCR and deploy it to the homelab.
+# Runs alongside deploy-staging.yml (DigitalOcean), which is unchanged.
+
+name: Deploy to Homelab
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-homelab
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/molero3111/notes-web
+
+jobs:
+  build:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          # Same-origin layout: SPA at /, API proxied by nginx under /api/.
+          build-args: |
+            VITE_API_URL=/api/
+            VITE_APP_URL=/
+            VITE_BASE_PATH=/
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:homelab
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to homelab
+    needs: build
+    runs-on: ubuntu-latest
+    environment: homelab
+    steps:
+      - name: Join tailnet
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Configure SSH
+        env:
+          HOMELAB_SSH_KEY: ${{ secrets.HOMELAB_SSH_KEY }}
+          HOMELAB_KNOWN_HOSTS: ${{ secrets.HOMELAB_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$HOMELAB_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$HOMELAB_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      # The deploy user has a forced command; the remote "command" is just "<app> <tag>".
+      - name: Deploy
+        run: ssh -o BatchMode=yes deploy@100.77.124.5 "notes-web ${{ github.sha }}"
